@@ -50,7 +50,7 @@
                     // close table tags
                     $html .= '</tbody>';
                     $html .= '</table>';
-                    $html .= '<script src="' . $this->htmlPath() .'sort-table.js' . '"></script>';
+                    $html .= '<script src="' . $this->htmlPath() .'sorttable.js' . '"></script>';
                     echo $html;
                 }
                 
