@@ -15,14 +15,20 @@
                     // get data array
                     $data = $obj->data;
 
+                    // add search bar
+                    $html  = '<div id="posts">';
+                    $html .= '<input class="search" placeholder="Search" />';
+
                     // create table and header
-                    $html  = '<table class="sortable">';
+                    $html .= '<table>';
                     $html .= '<thead>';
                     $html .= '<tr>';
 
                     foreach($data[0] as $key=>$value){
                         if (in_array($key, $keys)) {
-                            $html .= '<th>' . $key . '</th>';
+                            $html .= '<th>';
+                            $html .= '<button class="sort" data-sort="' . $key . '">' . $key . '</button>';
+                            $html .= '</th>';
                         }
                     }
 
@@ -30,17 +36,17 @@
                     $html .= '</thead>';
 
                     // create table body
-                    $html .= '<tbody>';
+                    $html .= '<tbody class="list">';
                     foreach($data as $article){
                         $html .= '<tr>';
                         foreach($article as $key=>$value){
                             if (in_array($key, $keys)) {
                                 if (strpos($key, 'link') !== false) {
-                                    $html .= '<td>';
+                                    $html .= '<td class="' . $key . '">';
                                     $html .= '<a href="' . $value . '">' . $value . '</a>';
                                     $html .= '</td>';
                                 } else {
-                                    $html .= '<td>' . $value . '</td>';
+                                    $html .= '<td class="' . $key . '">' . $value . '</td>';
                                 }                       
                             }                   
                         }
@@ -50,7 +56,24 @@
                     // close table tags
                     $html .= '</tbody>';
                     $html .= '</table>';
-                    $html .= '<script src="' . $this->htmlPath() .'sorttable.js' . '"></script>';
+                    $html .= '</div>';
+
+                    // add JS
+                    $html .= '<script src="' . $this->htmlPath() .'list.min.js' . '"></script>';
+
+                    // render-js
+                    $html .= '<script id="rendered-js">';
+                    $html .= 'var options = { valueNames: [ ';           
+                    foreach($data[0] as $key=>$value){
+                        if (in_array($key, $keys)) {
+                            $html .= "'" . $key . "', ";
+                        }
+                    }
+                    $html .= '] }; ';
+                    $html .= "var userList = new List('posts', options);";
+                    $html .= '</script>';
+
+                    // print html out
                     echo $html;
                 }
                 
