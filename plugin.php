@@ -66,8 +66,6 @@
                     // get data array
                     $data = $obj->data;
 
-                    include 'CSS/main.css';
-
                     echo '<style type="text/css">';
                     include 'css/table.css';
                     echo '</style>';
