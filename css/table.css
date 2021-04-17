@@ -1,0 +1,42 @@
+.inside-article {
+    background-color: unset !important;
+}
+
+#right-sidebar {
+    display: none;
+}
+
+tr {
+    background-color: #fff;
+}
+
+th {
+    background-color: #fff;
+    min-width: 160px !important;
+    max-width: 160px !important;
+}
+
+td {
+    min-width: 160px !important;
+    max-width: 160px !important;
+}
+
+.search {
+    border: 1px solid #ccc;
+    border-radius: 0;
+    padding: 10px 15px;
+    box-sizing: border-box;
+    max-width: 100%;
+    margin-bottom: 10px;
+}
+
+.entry-title,
+.title {
+    display: none;
+}
+
+.entry-summary,
+.page-content {
+    margin: 0em 0 0;
+    display: none;
+}

@@ -1,7 +1,11 @@
 {
-    "plugin-data":
-    {
+    "plugin-data": {
         "name": "Sitemap table generator",
-        "description": "This plugin generates a HTML table from the sitemap.xml"
-    }
+        "description": "This plugin generates a HTML table from the pages.json"
+    },
+    "header-sitemap": "Tables header",
+    "header-sitemap-example": "The tables header and the plaintext to it. The order must match the order from the JSON file. Example: 'dateRaw Date|permalink Link|...'",
+    "pages-json-path": "Relative path to the pages.json file",
+    "pages-json-path-explanation": "Realtive path starting from $_SERVER['DOCUMENT_ROOT']."
+
 }

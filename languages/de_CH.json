@@ -1,0 +1,11 @@
+{
+    "plugin-data": {
+        "name": "Sitemap Tabellengenerator",
+        "description": "Dieses Plugin erzeugt eine HTML-Tabelle aus der pages.json"
+    },
+    "header-sitemap": "Tabellenkopf",
+    "header-sitemap-example": "Der Tabellenkopf und der Klartext dazu. Die Reihenfolge muss mit der Reihenfolge aus der JSON-Datei übereinstimmen. Beispiel: 'dateRaw Date|permalink Link|...'",
+    "pages-json-path": "Relativer Pfad zur pages.json Datei",
+    "pages-json-path-explanation": "Realtiver Pfad ausgehend von $_SERVER['DOCUMENT_ROOT']."
+
+}
