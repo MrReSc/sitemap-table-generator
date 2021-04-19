@@ -43,4 +43,4 @@ SOFTWARE.
 
 ## Credits
 * [list.js](https://listjs.com/) from [@javve](https://github.com/javve) provides the ability to search and sort
-* [@Lioh](https://github.com/LiohMoeller) has contributed code
+* [@LiohMoeller](https://github.com/LiohMoeller) has contributed code
