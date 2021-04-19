@@ -13,6 +13,22 @@
             );
         }
 
+        public function beforeSiteLoad() {
+		    $webhook = $this->getValue('webhookSitemap');
+		    if ($this->webhook($webhook)) {
+                    $html = '<head><title>';
+                    if (!empty($this->getValue('pageTitle'))){
+                        $html .= $this->getValue('pageTitle');
+                    }
+                    else {
+                        $html .= $webhook;
+                    }                  
+                    $html .= '</title></head>';
+                    // print html out
+                    echo $html;
+            }
+        }
+
         public function form()
         {
             global $L;
