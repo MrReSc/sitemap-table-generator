@@ -5,7 +5,11 @@
         {
             $this->dbFields = array(
                 'headerSitemap'=>'title Titel|description Beschreibung|dateRaw Datum|username Autor|category Kategorie|permalink Link',
-                'pagesJsonPath'=>'/siteindex/pages.json'
+                'pagesJsonPath'=>'/siteindex/pages.json',
+                'webhookSitemap'=>'sitemap',
+                'pageTitle'=>'Sitemap table',
+                'enableSearchbar'=>true,
+                'enableColumnSort'=>true,
             );
         }
 
@@ -22,29 +26,42 @@
             $html .= '<input name="pagesJsonPath" id="jspagesJsonPath" type="text" value="'.$this->getValue('pagesJsonPath').'">';
             $html .= '<span class="tip">'.$L->get('pages-json-path-explanation').'</span>';
             $html .= '</div>';
+
+            $html .= '<div>';
+            $html .= '<label>'.$L->get('webhook-sitemap').'</label>';
+            $html .= '<input name="webhookSitemap" id="jswebhookSitemap" type="text" value="'.$this->getValue('webhookSitemap').'">';
+            $html .= '<span class="tip">'.$L->get('webhook-sitemap-explanation').'</span>';
+            $html .= '</div>';
+
+            $html .= '<div>';
+            $html .= '<label>'.$L->get('page-title').'</label>';
+            $html .= '<input name="pageTitle" id="jspageTitle" type="text" value="'.$this->getValue('pageTitle').'">';
+            $html .= '<span class="tip">'.$L->get('page-title-example').'</span>';
+            $html .= '</div>';
     
             $html .= '<div>';
             $html .= '<label>'.$L->get('header-sitemap').'</label>';
             $html .= '<input name="headerSitemap" id="jsheaderSitemap" type="text" value="'.$this->getValue('headerSitemap').'">';
             $html .= '<span class="tip">'.$L->get('header-sitemap-example').'</span>';
             $html .= '</div>';
+
+            $html .= '<div>';
+            $html .= '<label>'.$L->get('enable-searchbar').'</label>';
+            $html .= '<input name="enableSearchbar" id="jsenableSearchbar" type="text" value="'.$this->getValue('enableSearchbar').'">';
+            $html .= '<span class="tip">'.$L->get('enable-searchbar-example').'</span>';
+            $html .= '</div>';
+
+            $html .= '<div>';
+            $html .= '<label>'.$L->get('enable-column-sort').'</label>';
+            $html .= '<input name="enableColumnSort" id="jsenableColumnSort" type="text" value="'.$this->getValue('enableColumnSort').'">';
+            $html .= '<span class="tip">'.$L->get('enable-column-sort-example').'</span>';
+            $html .= '</div>';
     
             return $html;
         }
 
-        public function beforeSiteLoad() {
-		    $webhook = 'sitemap';
-		    if ($this->webhook($webhook)) {
-                    $html = '<head>';
-                    $html .= '<title>Sitemap</title>';
-                    $html .= '</head>';
-                    // print html out
-                    echo $html;
-            }
-        }
-
         public function pageBegin() {
-		    $webhook = 'sitemap';
+		    $webhook = $this->getValue('webhookSitemap');
             $keys = array();
             $langkeys = array();
 
@@ -70,9 +87,16 @@
                     include 'css/table.css';
                     echo '</style>';
 
+                    // add title
+                    if (!empty($this->getValue('pageTitle'))){
+                        $html .= '<h1>' . $this->getValue('pageTitle') . '</h1>';
+                    }
+
                     // add search bar
-                    $html .= '<div id="posts">';
-                    $html .= '<input class="search" placeholder="Suche" />';
+                    if ($this->getValue('enableSearchbar') === true) {
+                        $html .= '<div id="posts">';
+                        $html .= '<input class="search" placeholder="Suche" />';
+                    }
 
                     // create table and header
                     $html .= '<table>';
@@ -83,7 +107,12 @@
                     foreach($keys as $index=> $key){
                         if (in_array($key, $keys)) {
                             $html .= '<th>';
-                            $html .= '<button class="sort" data-sort="' . $key . '-cell">' . $langkeys[$index] . '&nbsp;&#x21D5;</button>';
+                            if ($this->getValue('enableColumnSort') === true) { 
+                                $html .= '<button class="sort" data-sort="' . $key . '-cell">' . $langkeys[$index] . '&nbsp;&#x21D5;</button>';
+                            }
+                            else {
+                                $html .= $langkeys[$index];
+                            }                          
                             $html .= '</th>';
                         }
                     }

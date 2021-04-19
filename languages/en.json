@@ -1,11 +1,18 @@
 {
     "plugin-data": {
         "name": "Sitemap table generator",
-        "description": "This plugin generates a HTML table from the pages.json"
+        "description": "This plugin generates a HTML table from the pages.json. The table can be searched and sorted."
     },
     "header-sitemap": "Tables header",
     "header-sitemap-example": "The tables header and the plaintext to it. The order must match the order from the JSON file. Example: 'dateRaw Date|permalink Link|...'",
     "pages-json-path": "Relative path to the pages.json file",
-    "pages-json-path-explanation": "Realtive path starting from $_SERVER['DOCUMENT_ROOT']."
-
+    "pages-json-path-explanation": "Realtive path starting from $_SERVER['DOCUMENT_ROOT'].",
+    "webhook-sitemap": "Webhook for the sitemap",
+    "webhook-sitemap-explanation": "The sitemap table can be reached under this address (www.example.com/webhook).",
+    "page-title": "Page title",
+    "page-title-example": "If a page title exists, an h1 heading is added on top.",
+    "enable-searchbar": "Enable search field",
+    "enable-searchbar-example": "If the search field is enabled (1 or true), the search field will be displayed.",
+    "enable-column-sort": "Enable sort columns",
+    "enable-column-sort-example": "If column sorting is enabled (1 or true), each column can be sorted individually."
 }
