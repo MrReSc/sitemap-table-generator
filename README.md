@@ -1,6 +1,8 @@
 # sitemap-table-generator
 A Bludit plugin that generates a sotable and searchable table from the overview (json from the API) of all blogposts.
 
+![](docs/screenshot_01.png)
+
 ## Requirement
 TODO 
 
