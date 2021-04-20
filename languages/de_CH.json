@@ -12,7 +12,7 @@
     "page-title": "Seitentitel",
     "page-title-example": "Wenn ein Seitentitel vorhanden ist, wird eine h1 Überschrift zuoberst hinzugefügt.",
     "enable-searchbar": "Suchfeld aktivieren",
-    "enable-searchbar-example": "Wenn das Suchfeld aktiviert ist (1 oder true), wird das Suchfeld eingeblendet.",
+    "enable-searchbar-example": "Wenn das Suchfeld aktiviert ist, wird das Suchfeld eingeblendet.",
     "enable-column-sort": "Spalten sortieren aktivieren",
-    "enable-column-sort-example": "Wenn das Spalten sortieren aktiviert ist (1 oder true), kann jede Spalte einzel sortiert werden."
+    "enable-column-sort-example": "Wenn das Spalten sortieren aktiviert ist, kann jede Spalte einzel sortiert werden."
 }

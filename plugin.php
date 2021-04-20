@@ -63,13 +63,19 @@
 
             $html .= '<div>';
             $html .= '<label>'.$L->get('enable-searchbar').'</label>';
-            $html .= '<input name="enableSearchbar" id="jsenableSearchbar" type="text" value="'.$this->getValue('enableSearchbar').'">';
+            $html .= '<select name="enableSearchbar">';
+            $html .= '<option value="true" '.($this->getValue('enableSearchbar')===true?'selected':'').'>'.$L->get('Enabled').'</option>';
+            $html .= '<option value="false" '.($this->getValue('enableSearchbar')===false?'selected':'').'>'.$L->get('Disabled').'</option>';
+            $html .= '</select>';
             $html .= '<span class="tip">'.$L->get('enable-searchbar-example').'</span>';
             $html .= '</div>';
 
             $html .= '<div>';
             $html .= '<label>'.$L->get('enable-column-sort').'</label>';
-            $html .= '<input name="enableColumnSort" id="jsenableColumnSort" type="text" value="'.$this->getValue('enableColumnSort').'">';
+            $html .= '<select name="enableColumnSort">';
+            $html .= '<option value="true" '.($this->getValue('enableColumnSort')===true?'selected':'').'>'.$L->get('Enabled').'</option>';
+            $html .= '<option value="false" '.($this->getValue('enableColumnSort')===false?'selected':'').'>'.$L->get('Disabled').'</option>';
+            $html .= '</select>';
             $html .= '<span class="tip">'.$L->get('enable-column-sort-example').'</span>';
             $html .= '</div>';
     

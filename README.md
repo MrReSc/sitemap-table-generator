@@ -13,8 +13,8 @@ TODO
 | Webhook for the sitemap | The sitemap table can be reached under this address (www.example.com/webhook). | `sitemap-table` |
 | Page title | If a page title exists, an h1 heading is added on top. | `Blogpost index` |
 | Tables header | The tables header and the plaintext to it. The order  must match the order from the JSON file. | `title Title\|description Description\|dateRaw Date` |
-| Enable search field | If the search field is enabled (1 or true), the search field will be displayed. | `1` |
-| Enable sort columns | If column sorting is enabled (1 or true), each column can be sorted individually. | `true` |
+| Enable search field | If the search field is enabled, the search field will be displayed. | `Enabled` |
+| Enable sort columns | If column sorting is enabled, each column can be sorted individually. | `Disabled` |
 
 ## License
 ~~~

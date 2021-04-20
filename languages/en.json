@@ -12,7 +12,7 @@
     "page-title": "Page title",
     "page-title-example": "If a page title exists, an h1 heading is added on top.",
     "enable-searchbar": "Enable search field",
-    "enable-searchbar-example": "If the search field is enabled (1 or true), the search field will be displayed.",
+    "enable-searchbar-example": "If the search field is enabled, the search field will be displayed.",
     "enable-column-sort": "Enable sort columns",
-    "enable-column-sort-example": "If column sorting is enabled (1 or true), each column can be sorted individually."
+    "enable-column-sort-example": "If column sorting is enabled, each column can be sorted individually."
 }
