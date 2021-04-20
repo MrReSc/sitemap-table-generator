@@ -4,7 +4,12 @@ A Bludit plugin that generates a sotable and searchable table from the overview 
 ![](docs/screenshot_01.png)
 
 ## Requirement
-TODO 
+The data to generate the table must be created via the [API](https://docs.bludit.com/en/api/introduction). All pages are stored in a `json` file. For performace reasons, the `json` file is not generated via JavaScript in the plugin. The easiest way to generate the `pages.json` file is via cron job on the server. The following command can be used for this:
+
+```
+curl --silent --location --request GET 'https:/YOUR_DOMAIN/api/pages?token=INSERT_TOKEN_HERE=10000' > /path/to/the/web/siteindex/pages.json
+```
+The path to the `pages.json`, in the above example `/path/to/the/web/siteindex/pages.json`, must be added in the plugin settings.
 
 ## Settings
 | Setting | Description | Example |
