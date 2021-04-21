@@ -1,5 +1,7 @@
 # sitemap-table-generator
-A Bludit plugin that generates a sotable and searchable table from the overview (json from the API) of all blogposts.
+A Bludit plugin that generates a sortable and searchable table from the overview (json from the API) of all blogposts.
+
+Demo (not really, it is in productive use :grinning:): [https://gnulinux.ch/artikelindex](https://gnulinux.ch/artikelindex)
 
 ![](docs/screenshot_01.png)
 
