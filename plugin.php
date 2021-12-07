@@ -13,6 +13,15 @@
             );
         }
 
+        public function beforeAll(){
+            global $url;
+            $webhook = $this->getValue('webhookSitemap');
+            if ($this->webhook($webhook)) {
+                // prevent a 404 status code
+                $url->setSlug(false);
+            }
+        }
+
         public function beforeSiteLoad() {
 		    $webhook = $this->getValue('webhookSitemap');
 		    if ($this->webhook($webhook)) {
