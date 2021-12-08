@@ -13,9 +13,20 @@
             );
         }
 
+        public function beforeAll(){
+            global $url;
+            $webhook = $this->getValue('webhookSitemap');
+            if ($this->webhook($webhook)) {
+                // prevent a 404 status code
+                $url->setSlug(false);
+            }
+        }
+
         public function beforeSiteLoad() {
-		    $webhook = $this->getValue('webhookSitemap');
-		    if ($this->webhook($webhook)) {
+            global $page;
+            $webhook = $this->getValue('webhookSitemap');
+            if ($this->webhook($webhook)) {
+                    $page->setField("type","static");
                     $html = '<head><title>';
                     if (!empty($this->getValue('pageTitle'))){
                         $html .= $this->getValue('pageTitle');
