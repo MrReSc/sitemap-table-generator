@@ -27,16 +27,12 @@
             $webhook = $this->getValue('webhookSitemap');
             if ($this->webhook($webhook)) {
                     $page->setField("type","static");
-                    $html = '<head><title>';
                     if (!empty($this->getValue('pageTitle'))){
-                        $html .= $this->getValue('pageTitle');
+                        $page->setField("title",$this->getValue('pageTitle'));
                     }
                     else {
-                        $html .= $webhook;
-                    }                  
-                    $html .= '</title></head>';
-                    // print html out
-                    echo $html;
+                        $page->setField($webhook);
+                    }
             }
         }
 
