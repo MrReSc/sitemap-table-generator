@@ -14,5 +14,7 @@
     "enable-searchbar": "Enable search field",
     "enable-searchbar-example": "If the search field is enabled, the search field will be displayed.",
     "enable-column-sort": "Enable sort columns",
-    "enable-column-sort-example": "If column sorting is enabled, each column can be sorted individually."
+    "enable-column-sort-example": "If column sorting is enabled, each column can be sorted individually.",
+    "link-column": "Link column",
+    "permalink": "Link"
 }
