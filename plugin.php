@@ -11,6 +11,7 @@ class pluginSitemapTableGen extends Plugin {
             'enableSearchbar'=>true,
             'enableColumnSort'=>true,
             'linkColumn' => 'permalink',
+            'enableSidebarSearch'=>false,
         );
     }
 
@@ -72,8 +73,8 @@ class pluginSitemapTableGen extends Plugin {
         $html .= '<div>';
         $html .= '<label>'.$L->get('enable-searchbar').'</label>';
         $html .= '<select name="enableSearchbar">';
-        $html .= '<option value="true" '.($this->getValue('enableSearchbar')===true?'selected':'').'>'.$L->get('Enabled').'</option>';
-        $html .= '<option value="false" '.($this->getValue('enableSearchbar')===false?'selected':'').'>'.$L->get('Disabled').'</option>';
+        $html .= '<option value="true" '.($this->getValue('enableSearchbar')==true?'selected':'').'>'.$L->get('Enabled').'</option>';
+        $html .= '<option value="false" '.($this->getValue('enableSearchbar')==false?'selected':'').'>'.$L->get('Disabled').'</option>';
         $html .= '</select>';
         $html .= '<span class="tip">'.$L->get('enable-searchbar-example').'</span>';
         $html .= '</div>';
@@ -94,6 +95,16 @@ class pluginSitemapTableGen extends Plugin {
         $html .= '<option value="title" '.($this->getValue('linkColumn')==='title'?'selected':'').'>'.$L->get('title').'</option>';
         $html .= '</select>';
         $html .= '</div>';
+
+        $html .= '<div>';
+        $html .= '<label>'.$L->get('enable-sidebar-search').'</label>';
+        $html .= '<select name="enableSidebarSearch">';
+        $html .= '<option value="true" '.($this->getValue('enableSidebarSearch')===true?'selected':'').'>'.$L->get('Enabled').'</option>';
+        $html .= '<option value="false" '.($this->getValue('enableSidebarSearch')===false?'selected':'').'>'.$L->get('Disabled').'</option>';
+        $html .= '</select>';
+        $html .= '<span class="tip">'.$L->get('enable-sidebar-search-example').'</span>';
+        $html .= '</div>';
+
 
 
         return $html;
@@ -134,7 +145,12 @@ class pluginSitemapTableGen extends Plugin {
                 // add search bar
                 if ($this->getValue('enableSearchbar') === true) {
                     $html .= '<div id="posts">';
-                    $html .= '<input class="search" placeholder="Suche" />';
+                    $value = "";
+                    if(strlen($_GET['search']) > 1){
+                        $value = 'value="'.strip_tags($_GET['search']).'"';
+                    }
+                    $html .= '<input class="search" placeholder="Suche" '.$value.' />';
+                    $html .= '<div id="posts-inside">';
                 }
 
                 // create table and header
@@ -181,6 +197,8 @@ class pluginSitemapTableGen extends Plugin {
                 $html .= '</tbody>';
                 $html .= '</table>';
                 $html .= '</div>';
+                $html .= '</div>';
+
 
                 // add JS
                 $html .= '<script src="' . $this->htmlPath() .'/list/list.min.js' . '"></script>';
@@ -195,6 +213,9 @@ class pluginSitemapTableGen extends Plugin {
                 }
                 $html .= '] }; ';
                 $html .= "var userList = new List('posts', options);";
+                if(strlen($_GET['search']) > 1){
+                    $html .= "userList.search('".str_replace("'","\'",strip_tags($_GET['search']))."');";
+                }
                 $html .= '</script>';
 
                 // print html out
@@ -203,5 +224,28 @@ class pluginSitemapTableGen extends Plugin {
 
         }
     }
+
+    // HTML for sidebar
+    public function siteSidebar()
+    {
+        if ($this->getValue('enableSidebarSearch')){
+            global $L;
+
+            $html = '<div class="plugin plugin-sitemap-table-generator">';
+            $html .= '<div class="plugin-content">';
+            $html .= '<form method="get" action="' . $this->getValue('webhookSitemap') . '">';
+            $html .= '<input type="text" name="search" /> ';
+
+            $html .= '<input type="submit" value="' . $L->get('Search') . '" />';
+
+
+            $html .= '</form>';
+            $html .= '</div>';
+            $html .= '</div>';
+
+
+            return $html;
+        }
+        return '';
+    }
 }
-?>
