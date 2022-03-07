@@ -102,7 +102,6 @@ class pluginSitemapTableGen extends Plugin {
         $html .= '<option value="true" '.($this->getValue('enableSidebarSearch')===true?'selected':'').'>'.$L->get('Enabled').'</option>';
         $html .= '<option value="false" '.($this->getValue('enableSidebarSearch')===false?'selected':'').'>'.$L->get('Disabled').'</option>';
         $html .= '</select>';
-        $html .= '<span class="tip">'.$L->get('enable-sidebar-search-example').'</span>';
         $html .= '</div>';
 
 
