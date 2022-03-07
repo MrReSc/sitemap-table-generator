@@ -13,12 +13,10 @@ tr {
 th {
     background-color: #fff;
     min-width: 160px !important;
-    max-width: 160px !important;
 }
 
 td {
     min-width: 160px !important;
-    max-width: 160px !important;
 }
 
 .search {
@@ -40,3 +38,33 @@ td {
     margin: 0em 0 0;
     display: none;
 }
+
+
+@media (prefers-color-scheme: dark) {
+    tr {
+        background-color: #000;
+    }
+    th {
+        background-color: #000;
+    }
+    .search {
+        border-color: #404040;
+        color: #999999;
+        background-color: #000000;
+    }
+}
+
+@media (max-device-width: 999px) {
+    #primary {
+        width: 100%;
+        max-width: 100%;
+    }
+
+
+    #posts-inside {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+    }
+}
+
