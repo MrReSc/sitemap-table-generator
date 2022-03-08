@@ -24,6 +24,9 @@ The path to the `pages.json`, in the above example `/path/to/the/web/siteindex/p
 | Tables header | The tables header and the plaintext to it. The order  must match the order from the JSON file. | `title Title\|description Description\|dateRaw Date` |
 | Enable search field | If the search field is enabled, the search field will be displayed. | `Enabled` |
 | Enable sort columns | If column sorting is enabled, each column can be sorted individually. | `Disabled` |
+| Link column | Select which column should link to the post | `title` |
+| Enable sidebar-search | Add a search box to every page with a sidebar | `Disabled` |
+
 
 ## License
 ~~~
@@ -53,3 +56,4 @@ SOFTWARE.
 ## Credits
 * [list.js](https://listjs.com/) from [@javve](https://github.com/javve) provides the ability to search and sort
 * [@LiohMoeller](https://github.com/LiohMoeller) has contributed code
+* [@gaincoder](https://github.com/gaincoder) has contributed code
