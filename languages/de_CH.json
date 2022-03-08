@@ -16,5 +16,6 @@
     "enable-column-sort": "Spalten sortieren aktivieren",
     "enable-column-sort-example": "Wenn das Spalten sortieren aktiviert ist, kann jede Spalte einzel sortiert werden.",
     "link-column": "Verlinkte Spalte",
-    "permalink": "Link"
+    "permalink": "Link",
+    "enable-sidebar-search": "Sidebar-Suche aktivieren"
 }
