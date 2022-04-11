@@ -47,12 +47,6 @@ class pluginSitemapTableGen extends Plugin {
         $html .= '</div>';
 
         $html .= '<div>';
-        $html .= '<label>'.$L->get('pages-json-path').'</label>';
-        $html .= '<input name="pagesJsonPath" id="jspagesJsonPath" type="text" value="'.$this->getValue('pagesJsonPath').'">';
-        $html .= '<span class="tip">'.$L->get('pages-json-path-explanation').'</span>';
-        $html .= '</div>';
-
-        $html .= '<div>';
         $html .= '<label>'.$L->get('webhook-sitemap').'</label>';
         $html .= '<input name="webhookSitemap" id="jswebhookSitemap" type="text" value="'.$this->getValue('webhookSitemap').'">';
         $html .= '<span class="tip">'.$L->get('webhook-sitemap-explanation').'</span>';
@@ -109,6 +103,49 @@ class pluginSitemapTableGen extends Plugin {
         return $html;
     }
 
+    private function getPages($args)
+    {
+        global $pages;
+
+
+        // Parameters and the default values
+        $published 	= (isset($args['published'])?$args['published']=='true':true);
+        $static 	= (isset($args['static'])?$args['static']=='true':false);
+        $draft 		= (isset($args['draft'])?$args['draft']=='true':false);
+        $sticky 	= (isset($args['sticky'])?$args['sticky']=='true':false);
+        $scheduled 	= (isset($args['scheduled'])?$args['scheduled']=='true':false);
+        $untagged 	= (isset($args['untagged'])?$args['untagged']=='true':false);
+
+        $numberOfItems = (isset($args['numberOfItems'])?$args['numberOfItems']:10);
+        $pageNumber = (isset($args['pageNumber'])?$args['pageNumber']:1);
+        $list = $pages->getList($pageNumber, $numberOfItems, $published, $static, $sticky, $draft, $scheduled);
+
+        $tmp = array(
+            'status'=>'0',
+            'message'=>'List of pages',
+            'numberOfItems'=>$numberOfItems,
+            'data'=>array()
+        );
+
+        foreach ($list as $pageKey) {
+            try {
+                // Create the page object from the page key
+                $page = new Page($pageKey);
+                if ($untagged) {
+                    if (empty($page->tags())) {
+                        // Push the page to the data array for the response
+                        array_push($tmp['data'], $page->json($returnsArray=true));
+                    }
+                } else{
+                    array_push($tmp['data'], $page->json($returnsArray=true));
+                }
+            } catch (Exception $e) {
+                // Continue
+            }
+        }
+        return $tmp;
+    }
+
     public function pageBegin() {
         $webhook = $this->getValue('webhookSitemap');
         $keys = array();
@@ -123,14 +160,10 @@ class pluginSitemapTableGen extends Plugin {
                 array_push($langkeys, $values[1]);
             }
 
-            if (file_exists($_SERVER['DOCUMENT_ROOT'].$this->getValue('pagesJsonPath'))) {
 
-                // get json file
-                $json = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/siteindex/pages.json');
-                // decode json
-                $obj = json_decode($json);
-                // get data array
-                $data = $obj->data;
+
+                $obj = $this->getPages(array("numberOfItems"=>10000));
+                $data = $obj["data"];
 
                 echo '<style type="text/css">';
                 include 'css/table.css';
@@ -219,7 +252,7 @@ class pluginSitemapTableGen extends Plugin {
 
                 // print html out
                 echo $html;
-            }
+
 
         }
     }

@@ -1,24 +1,13 @@
 # sitemap-table-generator
-A Bludit plugin that generates a sortable and searchable table from the overview (json from the API) of all blogposts.
+A Bludit plugin that generates a sortable and searchable table of all blogposts.
 
 Demo (not really, it is in productive use :grinning:): [https://gnulinux.ch/artikelindex](https://gnulinux.ch/artikelindex)
 
 ![](docs/screenshot_01.png)
 
-*Note: This is not a plug and play extension. A `pages.json` file must be created on the server otherwise the extension will not work.*
-
-## Requirement
-The data to generate the table must be created via the [API](https://docs.bludit.com/en/api/introduction). All pages are stored in a `json` file. For performace reasons, the `json` file is not generated via JavaScript in the plugin. The easiest way to generate the `pages.json` file is via cron job on the server. The following command can be used for this:
-
-```
-curl --silent --location --request GET 'https:/YOUR_DOMAIN/api/pages?token=INSERT_TOKEN_HERE=10000' > /path/to/the/web/siteindex/pages.json
-```
-The path to the `pages.json`, in the above example `/path/to/the/web/siteindex/pages.json`, must be added in the plugin settings.
-
 ## Settings
 | Setting | Description | Example |
 |-|-|-|
-| Relative path to the pages.json file | Realtive path starting from $_SERVER['DOCUMENT_ROOT']. | `/siteindex/pages.json` |
 | Webhook for the sitemap | The sitemap table can be reached under this address (www.example.com/webhook). | `sitemap-table` |
 | Page title | If a page title exists, an h1 heading is added on top. | `Blogpost index` |
 | Tables header | The tables header and the plaintext to it. The order  must match the order from the JSON file. | `title Title\|description Description\|dateRaw Date` |
