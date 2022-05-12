@@ -106,7 +106,7 @@ class pluginSitemapTableGen extends Plugin {
     private function getPages($args)
     {
         global $pages;
-
+        global $tags;
 
         // Parameters and the default values
         $published 	= (isset($args['published'])?$args['published']=='true':true);
@@ -114,7 +114,6 @@ class pluginSitemapTableGen extends Plugin {
         $draft 		= (isset($args['draft'])?$args['draft']=='true':false);
         $sticky 	= (isset($args['sticky'])?$args['sticky']=='true':false);
         $scheduled 	= (isset($args['scheduled'])?$args['scheduled']=='true':false);
-        $untagged 	= (isset($args['untagged'])?$args['untagged']=='true':false);
 
         $numberOfItems = (isset($args['numberOfItems'])?$args['numberOfItems']:10);
         $pageNumber = (isset($args['pageNumber'])?$args['pageNumber']:1);
@@ -126,19 +125,24 @@ class pluginSitemapTableGen extends Plugin {
             'numberOfItems'=>$numberOfItems,
             'data'=>array()
         );
-
         foreach ($list as $pageKey) {
             try {
                 // Create the page object from the page key
                 $page = new Page($pageKey);
-                if ($untagged) {
-                    if (empty($page->tags())) {
-                        // Push the page to the data array for the response
-                        array_push($tmp['data'], $page->json($returnsArray=true));
+                $articleData = $page->json($returnsArray=true);
+                $tagLabels = explode(',',trim($articleData['tags']));
+                $articleData['tags'] = implode(', ',$tagLabels);
+                $tagLinks = array();
+                foreach ($tagLabels as $label) {
+                    if(strlen($label) > 0) {
+                        $key = Text::cleanUrl($label);
+                        $tagLinks[] = '<a href="/tag/' . $key . '">' . $label . '</a>';
                     }
-                } else{
-                    array_push($tmp['data'], $page->json($returnsArray=true));
                 }
+
+                $articleData['tagLinks'] = implode(', ',$tagLinks);
+                array_push($tmp['data'], $articleData);
+
             } catch (Exception $e) {
                 // Continue
             }
@@ -152,7 +156,6 @@ class pluginSitemapTableGen extends Plugin {
         $langkeys = array();
 
         if ($this->webhook($webhook)) {
-
             $headerSitemap = explode("|", $this->getValue('headerSitemap'));
             foreach($headerSitemap AS $head) {
                 $values = explode(" ", $head);
@@ -164,7 +167,6 @@ class pluginSitemapTableGen extends Plugin {
 
                 $obj = $this->getPages(array("numberOfItems"=>10000));
                 $data = $obj["data"];
-
                 echo '<style type="text/css">';
                 include 'css/table.css';
                 echo '</style>';
@@ -190,9 +192,8 @@ class pluginSitemapTableGen extends Plugin {
                 $html .= '<thead>';
                 $html .= '<tr>';
 
-
-                foreach($keys as $index=> $key){
-                    if (in_array($key, $keys)) {
+              foreach($keys as $index=> $key){
+                  if (array_key_exists($key, $data[0])){
                         $html .= '<th>';
                         if ($this->getValue('enableColumnSort') === true) {
                             $html .= '<button class="sort" data-sort="' . $key . '-cell">' . $langkeys[$index] . '&nbsp;&#x21D5;</button>';
@@ -211,14 +212,14 @@ class pluginSitemapTableGen extends Plugin {
                 $html .= '<tbody class="list">';
                 foreach($data as $article){
                     $html .= '<tr>';
-                    foreach($article as $key=>$value){
-                        if (in_array($key, $keys)) {
+                    foreach($keys as $key){
+                        if (array_key_exists($key, $article)) {
                             if ($key == $this->getValue('linkColumn')) {
                                 $html .= '<td class="' . $key . '-cell">';
-                                $html .= '<a href="' . $article->permalink. '">' . $value . '</a>';
+                                $html .= '<a href="' . $article->permalink. '">' . $article[$key] . '</a>';
                                 $html .= '</td>';
                             } else {
-                                $html .= '<td class="' . $key . '-cell">' . $value . '</td>';
+                                $html .= '<td class="' . $key . '-cell">' . $article[$key] . '</td>';
                             }
                         }
                     }
@@ -265,7 +266,7 @@ class pluginSitemapTableGen extends Plugin {
 
             $html = '<div class="plugin plugin-sitemap-table-generator">';
             $html .= '<div class="plugin-content">';
-            $html .= '<form method="get" action="' . $this->getValue('webhookSitemap') . '">';
+            $html .= '<form method="get" action="/' . $this->getValue('webhookSitemap') . '">';
             $html .= '<input type="text" name="search" /> ';
 
             $html .= '<input type="submit" value="' . $L->get('Search') . '" />';
