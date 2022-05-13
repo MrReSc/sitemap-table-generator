@@ -216,7 +216,7 @@ class pluginSitemapTableGen extends Plugin {
                         if (array_key_exists($key, $article)) {
                             if ($key == $this->getValue('linkColumn')) {
                                 $html .= '<td class="' . $key . '-cell">';
-                                $html .= '<a href="' . $article->permalink. '">' . $article[$key] . '</a>';
+                                $html .= '<a href="' . $article["permalink"]. '">' . $article[$key] . '</a>';
                                 $html .= '</td>';
                             } else {
                                 $html .= '<td class="' . $key . '-cell">' . $article[$key] . '</td>';
