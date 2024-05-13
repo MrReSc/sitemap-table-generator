@@ -154,6 +154,7 @@ class pluginSitemapTableGen extends Plugin {
         $webhook = $this->getValue('webhookSitemap');
         $keys = array();
         $langkeys = array();
+        global $users;
 
         if ($this->webhook($webhook)) {
             $headerSitemap = explode("|", $this->getValue('headerSitemap'));
@@ -165,94 +166,107 @@ class pluginSitemapTableGen extends Plugin {
 
 
 
-                $obj = $this->getPages(array("numberOfItems"=>10000));
-                $data = $obj["data"];
-                echo '<style type="text/css">';
-                include 'css/table.css';
-                echo '</style>';
+            $obj = $this->getPages(array("numberOfItems"=>10000));
+            $data = $obj["data"];
+            $data[0]['nickname'] = "";
+            echo '<style type="text/css">';
+            include 'css/table.css';
+            echo '</style>';
 
-                // add title
-                if (!empty($this->getValue('pageTitle'))){
-                    $html .= '<h1>' . $this->getValue('pageTitle') . '</h1>';
-                }
+            // add title
+            if (!empty($this->getValue('pageTitle'))){
+                $html .= '<h1>' . $this->getValue('pageTitle') . '</h1>';
+            }
 
-                // add search bar
-                if ($this->getValue('enableSearchbar') === true) {
-                    $html .= '<div id="posts">';
-                    $value = "";
-                    if(strlen($_GET['search']) > 1){
-                        $value = 'value="'.strip_tags($_GET['search']).'"';
-                    }
-                    $html .= '<input class="search" placeholder="Suche" '.$value.' />';
-                    $html .= '<div id="posts-inside">';
-                }
-
-                // create table and header
-                $html .= '<table>';
-                $html .= '<thead>';
-                $html .= '<tr>';
-
-              foreach($keys as $index=> $key){
-                  if (array_key_exists($key, $data[0])){
-                        $html .= '<th>';
-                        if ($this->getValue('enableColumnSort') === true) {
-                            $html .= '<button class="sort" data-sort="' . $key . '-cell">' . $langkeys[$index] . '&nbsp;&#x21D5;</button>';
-                        }
-                        else {
-                            $html .= $langkeys[$index];
-                        }
-                        $html .= '</th>';
-                    }
-                }
-
-                $html .= '</tr>';
-                $html .= '</thead>';
-
-                // create table body
-                $html .= '<tbody class="list">';
-                foreach($data as $article){
-                    $html .= '<tr>';
-                    foreach($keys as $key){
-                        if (array_key_exists($key, $article)) {
-                            if ($key == $this->getValue('linkColumn')) {
-                                $html .= '<td class="' . $key . '-cell">';
-                                $html .= '<a href="' . $article["permalink"]. '">' . $article[$key] . '</a>';
-                                $html .= '</td>';
-                            } else {
-                                $html .= '<td class="' . $key . '-cell">' . $article[$key] . '</td>';
-                            }
-                        }
-                    }
-                    $html .= '</tr>';
-                }
-
-                // close table tags
-                $html .= '</tbody>';
-                $html .= '</table>';
-                $html .= '</div>';
-                $html .= '</div>';
-
-
-                // add JS
-                $html .= '<script src="' . $this->htmlPath() .'/list/list.min.js' . '"></script>';
-
-                // render-js
-                $html .= '<script id="rendered-js">';
-                $html .= 'var options = { valueNames: [ ';
-                foreach($data[0] as $key=>$value){
-                    if (in_array($key, $keys)) {
-                        $html .= "'" . $key . "-cell', ";
-                    }
-                }
-                $html .= '] }; ';
-                $html .= "var userList = new List('posts', options);";
+            // add search bar
+            if ($this->getValue('enableSearchbar') === true) {
+                $html .= '<div id="posts">';
+                $value = "";
                 if(strlen($_GET['search']) > 1){
-                    $html .= "userList.search('".str_replace("'","\'",strip_tags($_GET['search']))."');";
+                    $value = 'value="'.strip_tags($_GET['search']).'"';
                 }
-                $html .= '</script>';
+                $html .= '<input class="search" placeholder="Suche" '.$value.' />';
+                $html .= '<div id="posts-inside">';
+            }
 
-                // print html out
-                echo $html;
+            // create table and header
+            $html .= '<table>';
+            $html .= '<thead>';
+            $html .= '<tr>';
+
+            foreach($keys as $index=> $key){
+                $hidden = '';
+                if (array_key_exists($key, $data[0])){
+                    if(strpos($key,'$')){
+                        $hidden = 'style="display:none"';
+                        $key = str_replace('$','',$key);
+                    }
+                    $html .= '<th '.$hidden.'>';
+                    if ($this->getValue('enableColumnSort') === true) {
+                        $html .= '<button class="sort" data-sort="' . $key . '-cell">' . $langkeys[$index] . '&nbsp;&#x21D5;</button>';
+                    }
+                    else {
+                        $html .= $langkeys[$index];
+                    }
+                    $html .= '</th>';
+                }
+            }
+
+            $html .= '</tr>';
+            $html .= '</thead>';
+
+            // create table body
+            $html .= '<tbody class="list">';
+            foreach($data as $article){
+                $user = $users->getUserDB($article['username']);
+                $article['nickname'] = $user['nickname'];
+                $html .= '<tr>';
+                foreach($keys as $key){
+                    $hidden = '';
+                    if(strpos($key,'$')){
+                        $hidden = 'style="display:none"';
+                        $key = str_replace('$','',$key);
+                    }
+                    if (array_key_exists($key, $article)) {
+                        if ($key == $this->getValue('linkColumn')) {
+                            $html .= '<td class="' . $key . '-cell" '.$hidden .'>';
+                            $html .= '<a href="' . $article["permalink"]. '">' . $article[$key] . '</a>';
+                            $html .= '</td>';
+                        } else {
+                            $html .= '<td class="' . $key . '-cell">' . $article[$key] . '</td>';
+                        }
+                    }
+                }
+                $html .= '</tr>';
+            }
+
+            // close table tags
+            $html .= '</tbody>';
+            $html .= '</table>';
+            $html .= '</div>';
+            $html .= '</div>';
+
+
+            // add JS
+            $html .= '<script src="' . $this->htmlPath() .'/list/list.min.js' . '"></script>';
+
+            // render-js
+            $html .= '<script id="rendered-js">';
+            $html .= 'var options = { valueNames: [ ';
+            foreach($data[0] as $key=>$value){
+                if (in_array($key, $keys) || in_array($key.'$', $keys)){
+                    $html .= "'" . $key . "-cell', ";
+                }
+            }
+            $html .= '] }; ';
+            $html .= "var userList = new List('posts', options);";
+            if(strlen($_GET['search']) > 1){
+                $html .= "userList.search('".str_replace("'","\'",strip_tags($_GET['search']))."');";
+            }
+            $html .= '</script>';
+
+            // print html out
+            echo $html;
 
 
         }
